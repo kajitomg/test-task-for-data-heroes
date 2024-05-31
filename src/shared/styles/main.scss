@@ -1,0 +1,14 @@
+@import 'base.scss';
+@import 'null';
+@import 'fonts';
+
+#app {
+  width: 100%;
+  max-height: 100vh;
+  margin: 0 auto;
+
+  & ::selection {
+    color: var(--color-text-selection);
+    background: var(--background-text-selection);
+  }
+}
