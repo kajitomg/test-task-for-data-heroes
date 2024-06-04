@@ -25,7 +25,7 @@ import Background from '@/shared/ui/icons/background/background.vue';
   align-items: center;
   width: 100%;
 
-  background: #fff;
+  background: var(--c-white);
 }
 svg {
   fill: rgb(245, 245, 245);
@@ -37,7 +37,7 @@ svg {
   & h2 {
     text-align: center;
     margin: 0px;
-    color: rgb(32, 35, 41);
+    color: var(--c-text-light-3);
     border: none;
     font-weight: 900;
     z-index: 1;

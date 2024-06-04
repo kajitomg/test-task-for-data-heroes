@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { defineStore } from 'pinia';
+import type { PaginationState } from '@/entities/pagination';
 
 type CharacterAliveStatus = 'Alive' | 'Dead' | 'unknown';
 type CharacterGender = 'Female' | 'Male' | 'Genderless' | 'unknown';
@@ -39,22 +39,44 @@ export type Character = {
 interface CharacterState {
   status: StoreStatus,
   data: Character[],
+  pagination: PaginationState,
   info?: ResponseInfo,
 }
 
 const initialState: CharacterState = {
   status: 'initial',
   data: [],
+  pagination: {
+    currentPage: 1,
+    maxPages: 1,
+    pages: [],
+  },
   info: {},
 };
 
 export const useCharacterStore = defineStore('character', {
   state: () => initialState,
   actions: {
-    async load(page?:number) {
-      const response = await axios.get(`https://rickandmortyapi.com/api/character/?${page && `page=${page}`}`);
-      this.data = await response.data.results;
-      this.info = await response.data.info;
+    async load(props?:{page?:number, url?: string}) {
+      try {
+        this.status = 'loading';
+
+        const response = await this.services.api.req({
+          url: '/character',
+          ...(props?.page && { params: { page: props.page } }),
+        });
+
+        this.data = await response.data.results;
+        this.info = await response.data.info;
+
+        this.pagination.currentPage = props?.page || this.pagination.currentPage;
+        this.pagination.maxPages = response.data.info.pages || this.pagination.maxPages;
+
+        this.status = 'success';
+      } catch (e) {
+        console.log(e);
+        this.status = 'error';
+      }
     },
   },
 });

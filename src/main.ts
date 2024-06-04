@@ -1,14 +1,32 @@
-import '@/shared/styles/main.scss'
+import '@/shared/styles/main.scss';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
 import App from '@/app/app.vue';
-import router from '@/app/router'
+import config from '@/config';
+import Services from './shared/services';
+import router from '@/app/router';
 
-const app = createApp(App)
+declare module 'pinia' {
+  export interface PiniaCustomProperties {
+    services: Services,
+  }
+}
 
-app.use(createPinia())
-app.use(router)
+const services = new Services(config);
 
-app.mount('#app')
+const app = createApp(App);
+const pinia = createPinia();
+
+pinia.use(({ store }) => {
+  // eslint-disable-next-line no-param-reassign
+  store.services = services;
+});
+
+app.use(pinia);
+
+app.use(router);
+
+
+app.mount('#app');

@@ -36,8 +36,10 @@ defineProps<{
     font-size: 18px;
     line-height: 30px;
 
-    &:hover {
-      color: var(--color-text-selection);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: var(--color-text-selection);
+      }
     }
   }
 }

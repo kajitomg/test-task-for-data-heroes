@@ -88,8 +88,10 @@ defineProps<{
       font-size: 26px;
       font-weight: 800;
 
-      &:hover {
-        color: var(--color-text-selection);
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: var(--color-text-selection);
+        }
       }
     }
   }
@@ -97,6 +99,18 @@ defineProps<{
   &__content-actions {
     flex: 1 1 0%;
 
+  }
+  @container (max-width: 600px) {
+    & {
+      flex-direction: column;
+      height: auto;
+      width: auto;
+
+      & img {
+        height: 300px;
+        width: 100%;
+      }
+    }
   }
 }
 </style>

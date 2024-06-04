@@ -14,7 +14,7 @@ const episode = await axios.get(props.item.episode[0]);
 
 <template>
   <card-item
-    class='home-page-card'
+    class='home-page-character-card'
     :title='item.name'
     :is='episode.data'
   >
@@ -31,12 +31,12 @@ const episode = await axios.get(props.item.episode[0]);
       />
     </template>
     <info-field
-      class='home-page-card__info'
+      class='home-page-character-card__info'
       :data='props.item.location.name'
       header='Last known location:'
     />
     <info-field
-      class='home-page-card__info'
+      class='home-page-character-card__info'
       :data='episode.data.name'
       header='First seen in:'
     />
@@ -47,7 +47,7 @@ const episode = await axios.get(props.item.episode[0]);
     scoped
     lang='scss'
 >
-.home-page-card {
+.home-page-character-card {
   height: 220px;
   width: 600px;
   background: rgb(60, 62, 68);
@@ -62,6 +62,19 @@ const episode = await axios.get(props.item.episode[0]);
 
   &__info {
     margin-top: 8px;
+  }
+
+  @container (max-width: 600px) {
+    & {
+      height: auto;
+      width: auto;
+      & img {
+        height: 300px;
+        width: 100%;
+
+        object-fit: cover;
+      }
+    }
   }
 }
 </style>
