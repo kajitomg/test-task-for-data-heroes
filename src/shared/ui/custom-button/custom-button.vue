@@ -33,6 +33,7 @@ const mergeClasses = (...elements) => elements.reduce((acc, element) => (element
   color: var(--color-text);
   font-size: 16px;
   padding: 8px 12px;
+  transition: 0.2s ease-in-out;
 
   .color__primary {
     background-color: #2196F3FF;
@@ -41,6 +42,10 @@ const mergeClasses = (...elements) => elements.reduce((acc, element) => (element
   .size__medium {
     font-size: 16px;
     padding: 8px 12px;
+  }
+
+  &:hover {
+    background-color: color-mix(in oklab,var(--c-blue), #fff 20%);
   }
 }
 </style>

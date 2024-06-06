@@ -1,8 +1,7 @@
 <script setup lang="ts">
 
-interface TextFieldProps {
-  label: string,
-  type?: string,
+interface StyledSelectProps {
+  label?: string;
   required?: boolean,
   invalid?: boolean,
   blured?: boolean,
@@ -10,7 +9,7 @@ interface TextFieldProps {
   placeholder?: string,
 }
 
-defineProps<TextFieldProps>();
+defineProps<StyledSelectProps>();
 
 const value = defineModel<string | number>();
 
@@ -18,33 +17,40 @@ const value = defineModel<string | number>();
 
 <template>
   <label :for="label">
-    <input
-      :id='label'
-      :type='type'
+    <select
+      :id="label"
       v-model='value'
-      class='text-field'
-      :placeholder='required ? `${placeholder}*` : placeholder'
-      :required='required'
+      :required="required"
+      class="styled-select"
       :class='{
         invalid,
         filled: !!value,
         blured,
         fullWidth,
       }'
-    />
+    >
+      <slot />
+    </select>
   </label>
 </template>
 
 <style scoped lang="scss">
-  .text-field {
+  .styled-select {
     position: relative;
+    color: #dad8d8;
 
-    padding: 12px;
+    background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+    background-position: calc(100% - 0.75rem) center;
+
+    -moz-appearance:none;
+    -webkit-appearance: none;
+    appearance: none;
+
+    padding: 15px calc(12px + 2rem) 12px 12px;
     border: #dad8d8 1px solid;
     border-radius: 4px;
-    background-color: transparent;
+    background-color: rgb(60, 62, 68);
 
-    color: #dad8d8;
     font-size: 14px;
     font-weight: bold;
 
@@ -61,11 +67,14 @@ const value = defineModel<string | number>();
     }
     &.filled {
       border: #827d7d 1px solid;
+      &.focused {
+        border: #05ce05 1px solid;
+      }
       &.invalid {
         border: #e82c3f 1px solid;
       }
     }
-    &.formBlured {
+    &.blured {
       &.invalid {
         border: #e82c3f 1px solid;
       }
@@ -74,5 +83,11 @@ const value = defineModel<string | number>();
     &.fullWidth {
       width: 100%;
     }
+
+    & option{
+      font-size: 14px;
+      font-weight: bold;
+    }
+
   }
 </style>

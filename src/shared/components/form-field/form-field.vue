@@ -40,11 +40,11 @@ defineProps<FormFieldProps>();
 
 <style scoped lang="scss">
   .form-field {
+    display: flex;
     flex-direction: column;
     margin: 8px 0;
   }
   .form-field__label {
-    display: inline-block;
     margin-bottom: 12px;
     padding: 0 4px;
 

@@ -3,22 +3,33 @@
     lang='ts'
 >
 
-import Button from '@/shared/ui/button/button.vue';
+import Button from '@/shared/ui/custom-button/custom-button.vue';
 import Arrow from '@/shared/ui/icons/arrow/arrow.vue';
-import { computed } from 'vue';
-import usePagination from '@/shared/components/pagination/use-pagination';
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  ref, watch, watchEffect,
+} from 'vue';
+import useResize from '@/shared/hooks/use-resize';
+import usePagination, {
+  DefaultPaginationVariants,
+} from '@/shared/hooks/use-pagination';
 
-enum Variants {
-  'numeric' = 'numeric',
+enum CustomPaginationVariants {
   'adjacent' = 'adjacent',
   'combined' = 'combined',
 }
+
+const Variants = { ...CustomPaginationVariants, ...DefaultPaginationVariants };
+
+type Variants = typeof Variants;
 
 const props = withDefaults(defineProps<{
   maxPage?: number,
   variant?: keyof typeof Variants,
 }>(), {
-  variant: Variants.combined,
+  variant: 'combined',
   maxPage: undefined,
 });
 
@@ -28,11 +39,14 @@ const {
   pages,
   nextPage,
   prevPage,
-  pickPage,
-} = usePagination({
-  page: page.value,
+  setPage,
+} = computed(() => usePagination({
+  page,
   maxPage: computed(() => props.maxPage || page.value),
-});
+  options: {
+    variant: computed(() => (props.variant === 'current' ? 'current' : 'numeric')),
+  },
+})).value;
 
 const callbacks = {
   prevPage() {
@@ -41,8 +55,8 @@ const callbacks = {
   nextPage() {
     page.value = nextPage();
   },
-  pickPage(value: number | null) {
-    page.value = pickPage(value);
+  setPage(value: number | null) {
+    page.value = setPage(value);
   },
 };
 
@@ -54,7 +68,11 @@ const callbacks = {
       class='pagination__button pagination__button-arrow'
       :disabled='page <= 1'
       v-on:click='callbacks.prevPage'
-      v-if='variant === Variants.combined || variant === Variants.adjacent'
+      v-if='
+        variant === Variants.combined
+          || variant === Variants.adjacent
+          || variant === Variants.current
+      '
     >
       <arrow />
     </Button>
@@ -63,10 +81,14 @@ const callbacks = {
       v-bind:key='`${index}_${pagination}`'
     >
       <Button
-        v-if='variant === Variants.combined || variant === Variants.numeric'
+        v-if='
+          variant === Variants.combined
+            || variant === Variants.numeric
+            || variant === Variants.current
+        '
         :disabled='!pagination'
         :class='[pagination === page ? "available" : "", pagination ? "pagination__button" : "empty"]'
-        v-on:click='() => callbacks.pickPage(pagination)'
+        v-on:click='() => callbacks.setPage(pagination)'
       >{{ pagination ? pagination : '...' }}
       </Button>
     </template>
@@ -74,7 +96,11 @@ const callbacks = {
       class='pagination__button pagination__button-arrow'
       :disabled='!maxPage || page >= maxPage'
       v-on:click='callbacks.nextPage'
-      v-if='variant === Variants.combined || variant === Variants.adjacent'
+      v-if='
+        variant === Variants.combined
+          || variant === Variants.adjacent
+          || variant === Variants.current
+      '
     >
       <arrow direction='right' />
     </Button>
@@ -97,8 +123,8 @@ const callbacks = {
   min-height: var(--btn-availabled-size);
 
   &__button {
-    width: var(--btn-size);
-    height: var(--btn-size);
+    min-width: var(--btn-size);
+    min-height: var(--btn-size);
     padding: 5px;
     font-weight: 500;
     border-radius: 50%;
@@ -106,14 +132,14 @@ const callbacks = {
     transition: 0.3s ease-in-out;
 
     &.available {
-      background-color: color-mix(in srgb,var(--c-blue), #000000 50%);
+      background-color: color-mix(in oklab,var(--c-blue), #000000 50%);
 
       width: var(--btn-availabled-size);
       height: var(--btn-availabled-size);
     }
 
     &:hover {
-      background-color: color-mix(in srgb,var(--c-blue), #ffffff 25%);
+      background-color: color-mix(in oklab,var(--c-blue), #ffffff 25%);
     }
   }
   &__button-arrow {
@@ -121,13 +147,13 @@ const callbacks = {
     padding: 14px;
 
     &:hover {
-      background-color: color-mix(in srgb,var(--c-white), transparent 90%);
+      background-color: color-mix(in oklab,var(--c-white), transparent 90%);
     }
 
     &:disabled {
       cursor: default;
       &:hover {
-        background-color: color-mix(in srgb,var(--c-black), transparent 90%);
+        background-color: color-mix(in oklab,var(--c-black), transparent 90%);
       }
     }
 

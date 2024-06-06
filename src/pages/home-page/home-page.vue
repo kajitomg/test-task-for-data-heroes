@@ -1,36 +1,26 @@
 <script setup lang='ts'>
 
-import FormField from '@/shared/components/form-field/form-field.vue';
-import TextField from '@/shared/ui/text-field/text-field.vue';
 import HomePageCharacter from '@/widgets/home-page-character/home-page-character.vue';
-import { storeToRefs } from 'pinia';
-import { ref, watchEffect } from 'vue';
+import HomePageFilters from '@/widgets/home-page-filters/home-page-filters.vue';
+import HomePagePreview from '@/widgets/home-page-preview/home-page-preview.vue';
+import { onMounted } from 'vue';
 import { useCharacterStore } from '@/entities/character/store';
 
 const character = useCharacterStore();
-const value = ref<string>('');
 
-watchEffect(() => {
-  console.log(value.value);
+const { init } = character;
+
+onMounted(() => {
+  init();
 });
-
-const { data: characters, pagination } = storeToRefs(character);
-
-const { load } = character;
-
-load({ page: pagination?.value.currentPage });
 
 </script>
 
 <template>
   <main>
-    <form-field label='Фильтр'>
-      <text-field
-        v-model='value'
-        label='test'
-      />
-    </form-field>
-    <home-page-character :characters='characters' />
+    <home-page-preview />
+    <home-page-filters />
+    <home-page-character />
   </main>
 </template>
 

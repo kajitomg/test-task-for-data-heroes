@@ -2,7 +2,7 @@
 import axios from 'axios';
 import InfoField from '@/shared/components/info-field/info-field.vue';
 import StatusField from '@/shared/components/status-field/status-field.vue';
-import CardItem from '@/shared/ui/card/card-item.vue';
+import CardItem from '@/shared/ui/custom-card/custom-card.vue';
 import type { Character } from '@/entities/character/store';
 
 const props = defineProps<{
@@ -50,7 +50,7 @@ const episode = await axios.get(props.item.episode[0]);
 .home-page-character-card {
   height: 220px;
   width: 600px;
-  background: rgb(60, 62, 68);
+  background-color: rgb(60, 62, 68);
 
   & img {
 
