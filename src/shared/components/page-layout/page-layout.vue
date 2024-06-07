@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import ContentContainer from '@/shared/ui/content-container/content-container.vue';
+
 </script>
 
 <template>
   <div class="page-layout">
     <main class="main">
-      <content-container>
-        <div class="main_content">
-          <slot></slot>
-        </div>
-      </content-container>
+      <div class="main__content">
+        <slot></slot>
+      </div>
     </main>
   </div>
 </template>
@@ -27,9 +25,8 @@ import ContentContainer from '@/shared/ui/content-container/content-container.vu
   flex-direction: column;
 
   flex: 1 0 100vh;
-}
-
-.main_content {
-  height: 100%;
+  &__content {
+    height: 100%;
+  }
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 
+import PageLayout from '@/shared/components/page-layout/page-layout.vue';
 import HomePageCharacter from '@/widgets/home-page-character/home-page-character.vue';
 import HomePageFilters from '@/widgets/home-page-filters/home-page-filters.vue';
 import HomePagePreview from '@/widgets/home-page-preview/home-page-preview.vue';
@@ -17,11 +18,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
+  <page-layout>
     <home-page-preview />
     <home-page-filters />
     <home-page-character />
-  </main>
+  </page-layout>
 </template>
 
 <style scoped>

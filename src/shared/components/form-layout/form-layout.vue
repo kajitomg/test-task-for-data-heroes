@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import ContentContainer from '@/shared/ui/content-container/content-container.vue';
+
 defineProps<{
   title: string
 }>();
@@ -9,37 +11,37 @@ defineProps<{
   <form
     class="form-layout"
   >
-    <div
-      class="form-layout__title"
-      v-if="$slots.title || title"
-    >
-      <h4
-        v-if="!$slots.title && !!title"
-        class="form-layout__title__text"
-      >{{ title }}</h4>
-      <slot
-        v-if="$slots.title && !title"
-        name="title"
-      />
-    </div>
-    <div class="form-layout__content">
-      <slot />
-    </div>
-    <div
-      class="form-layout__actions"
-      v-if="$slots.actions"
-    >
-      <slot
-        name="actions"
-      />
-    </div>
+    <content-container>
+      <div
+        class="form-layout__title"
+        v-if="$slots.title || title"
+      >
+        <h4
+          v-if="!$slots.title && !!title"
+          class="form-layout__title__text"
+        >{{ title }}</h4>
+        <slot
+          v-if="$slots.title && !title"
+          name="title"
+        />
+      </div>
+      <div class="form-layout__content">
+        <slot />
+      </div>
+      <div
+        class="form-layout__actions"
+        v-if="$slots.actions"
+      >
+        <slot
+          name="actions"
+        />
+      </div>
+    </content-container>
   </form>
 </template>
 
 <style scoped lang="scss">
   .form-layout {
-    padding: 16px;
-
     background-color: rgb(60, 62, 68);
   }
   .form-layout__title {

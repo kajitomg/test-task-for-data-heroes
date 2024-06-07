@@ -4,6 +4,7 @@
 >
 import Spinner from '@/shared/ui/spinner/spinner.vue';
 import HomePageCard from '@/features/home-page-character-card/home-page-character-card.vue';
+import HomePageCharacterError from '@/widgets/home-page-character-error/home-page-character-error.vue';
 import { storeToRefs } from 'pinia';
 import { useCharacterStore } from '@/entities/character/store';
 
@@ -20,7 +21,7 @@ const { data: characters, status } = storeToRefs(character);
       <section
         v-for="character in characters"
         v-bind:key='character.id'
-        v-show='status === "success"'
+        v-if='status === "success"'
       >
         <Suspense>
           <home-page-card
@@ -30,10 +31,14 @@ const { data: characters, status } = storeToRefs(character);
       </section>
       <section
         class='home-page-character-list__loader'
-        v-show='status === "loading"'
+        v-if='status === "loading"'
       >
         <spinner />
       </section>
+      <home-page-character-error
+        title='Нет соответствий'
+        v-if='status === "error"'
+      />
     </div>
   </div>
 </template>

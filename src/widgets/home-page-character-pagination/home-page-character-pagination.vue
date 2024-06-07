@@ -10,7 +10,7 @@ import { useCharacterStore } from '@/entities/character/store';
 import useResize from '@/shared/hooks/use-resize';
 
 const character = useCharacterStore();
-const { pagination } = storeToRefs(character);
+const { pagination, status } = storeToRefs(character);
 
 const width = useResize();
 const isMediaQueryS = computed<boolean>(() => width.value <= 600);
@@ -26,6 +26,7 @@ const callbacks = {
 
 <template>
   <pagination
+    v-if='status === "success"'
     class='home-page-character-pagination'
     :max-page='pagination.maxPages'
     :variant='isMediaQueryS ? "current" : "combined"'

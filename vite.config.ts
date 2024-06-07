@@ -14,5 +14,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  base: '/vue-test-task-for-data-heroes/',
+  base: process.env.NODE_ENV === 'production' ? '/test-task-for-data-heroes/' : '/',
 });

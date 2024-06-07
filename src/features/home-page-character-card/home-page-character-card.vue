@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import axios from 'axios';
 import InfoField from '@/shared/components/info-field/info-field.vue';
-import StatusField from '@/shared/components/status-field/status-field.vue';
+import StatusField from '@/features/status-field/status-field.vue';
 import CardItem from '@/shared/ui/custom-card/custom-card.vue';
 import type { Character } from '@/entities/character/store';
 
